@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ViewFlow</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+    <main id="loginView" class="login-shell hidden">
+      <form id="loginForm" class="login-panel">
+        <div class="brand large">
+          <span class="brand-mark"></span>
+          <div>
+            <strong>ViewFlow</strong>
+            <small>by WANT2VIEW</small>
+          </div>
+        </div>
+        <div>
+          <p class="eyebrow">ViewFlow</p>
+          <h1>Creator videos, offers and payouts in one workspace.</h1>
+          <p class="muted">Creators track posts and earnings. Operators verify videos, views and payout statuses.</p>
+        </div>
+        <label>
+          Login
+          <input name="username" autocomplete="username" required />
+        </label>
+        <label>
+          Password
+          <input name="password" type="password" autocomplete="current-password" required />
+        </label>
+        <button type="submit">Sign in</button>
+        <p id="loginError" class="error"></p>
+      </form>
+      <section class="login-panel product-positioning">
+        <p class="eyebrow">Performance creator network</p>
+        <h2>AI and SaaS teams pay creators for verified short-form views.</h2>
+        <div class="positioning-flow">
+          <span>Research</span>
+          <i></i>
+          <span>Brief</span>
+          <i></i>
+          <span>Creators</span>
+          <i></i>
+          <span>Verified views</span>
+        </div>
+        <ul>
+          <li>Advertisers launch offers with rates, caps and platform rules.</li>
+          <li>Creators publish clips and track accepted views, holds and payouts.</li>
+          <li>Operators review videos, fraud signals and payout status in one place.</li>
+        </ul>
+      </section>
+      <details class="login-panel register-box">
+        <summary>Apply for access</summary>
+        <form id="registerForm" class="register-form">
+          <fieldset class="role-choice">
+            <legend>Account type</legend>
+            <label>
+              <input type="radio" name="role" value="creator" checked />
+              <span>Creator</span>
+            </label>
+            <label>
+              <input type="radio" name="role" value="advertiser" />
+              <span>Advertiser</span>
+            </label>
+          </fieldset>
+          <label data-role-field="creator">Name / handle<input name="creatorName" /></label>
+          <label data-role-field="advertiser" class="hidden">Company<input name="companyName" /></label>
+          <label>Email<input name="email" type="email" required /></label>
+          <label>Create password<input name="password" type="password" autocomplete="new-password" minlength="6" required /></label>
+          <label>Telegram<input name="telegram" placeholder="@username" /></label>
+          <fieldset class="platform-choice" data-role-field="creator">
+            <legend>Platforms</legend>
+            <label><input type="checkbox" name="creatorPlatforms" value="Instagram Reels" checked /><span>Instagram Reels</span></label>
+            <label><input type="checkbox" name="creatorPlatforms" value="YouTube Shorts" /><span>YouTube Shorts</span></label>
+            <label><input type="checkbox" name="creatorPlatforms" value="TikTok" /><span>TikTok</span></label>
+            <label><input type="checkbox" name="creatorPlatforms" value="X / Twitter" /><span>X / Twitter</span></label>
+          </fieldset>
+          <label data-role-field="creator">Content niche<input name="creatorNiche" placeholder="AI, SaaS, lifestyle, reviews" /></label>
+          <label data-role-field="advertiser" class="hidden">Service / product<input name="advertiserService" placeholder="Product or website name" /></label>
+          <label data-role-field="advertiser" class="hidden">Promotion goal<select name="advertiserGoal"><option>Video views</option><option>Registrations</option><option>Sales</option><option>Still discussing</option></select></label>
+          <label>Content language<select name="language"><option>EN</option><option>RU</option></select></label>
+          <label class="wide">Comment<input name="note" placeholder="Accounts, links, format or key details" /></label>
+          <button type="submit">Submit application</button>
+          <p id="registerStatus" class="muted"></p>
+        </form>
+      </details>
+    </main>
+
+    <main id="appView" class="app hidden">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark"></span>
+          <div>
+            <strong>ViewFlow</strong>
+            <small>by WANT2VIEW</small>
+          </div>
+        </div>
+
+        <section class="sidebar-group">
+          <p class="sidebar-label">Workspaces</p>
+          <div class="cabinet-switch" aria-label="Cabinet switch">
+            <button data-role="advertiser" type="button"><span class="nav-icon" data-icon="briefcase"></span>Advertiser</button>
+            <button class="active" data-role="creator" type="button"><span class="nav-icon" data-icon="user"></span>Creator</button>
+            <button data-role="ops" type="button"><span class="nav-icon" data-icon="shield"></span>Platform</button>
+          </div>
+        </section>
+
+        <nav id="sideTabs" class="tabs side-tabs" aria-label="Dashboard sections">
+        </nav>
+      </aside>
+
+      <section class="app-shell">
+        <header class="topbar">
+          <div class="current-context">
+            <small>Current workspace</small>
+            <strong id="currentWorkspace">UBT ops</strong>
+          </div>
+          <div class="topbar-actions">
+            <div class="user-menu">
+              <button id="userMenuBtn" class="user-menu-button" type="button" aria-expanded="false" aria-controls="userMenuPanel">
+                Account
+              </button>
+              <div id="userMenuPanel" class="user-menu-panel hidden">
+                <button type="button">Settings</button>
+                <button type="button">Support</button>
+                <button type="button">Language: EN</button>
+                <button id="logoutBtn" type="button">Log out</button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <section id="globalHero" class="hero-row hidden">
+          <div>
+            <p class="eyebrow">Real-time performance network</p>
+            <h1>Verified creator views for AI services.</h1>
+            <p class="muted lead">Offers, accepted views, advertiser balances, creator payouts and USDT settlement cycles.</p>
+          </div>
+          <div class="hero-note">
+            <small>Local MVP</small>
+            <strong>Node.js + JSON DB</strong>
+            <span>Ready for Postgres/Auth next</span>
+          </div>
+        </section>
+
+        <section id="dashboard" class="tab-panel">
+          <section class="market-position-panel">
+            <div>
+              <p class="eyebrow">Category thesis</p>
+              <h2>Not another clip marketplace: verified-view distribution for AI/SaaS products.</h2>
+              <p class="muted">Built from the Klipni / VibeVO / Whop / Vyro pattern, but focused on research-backed briefs, creator quality and payout verification.</p>
+            </div>
+            <div id="marketSignals" class="market-signal-grid"></div>
+          </section>
+          <section class="dashboard-summary">
+            <div class="summary-head">
+              <div>
+                <p class="eyebrow">Dashboard</p>
+                <h2>Performance for selected period</h2>
+              </div>
+              <div class="period-control">
+                <label>
+                  Period
+                  <select id="periodSelect">
+                    <option value="7">Last 7 days</option>
+                    <option value="14" selected>Last 14 days</option>
+                    <option value="30">Last 30 days</option>
+                    <option value="cycle">Current payout cycle</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div id="kpis" class="kpi-grid summary-kpis"></div>
+            <div id="approvalWheels" class="wheel-grid"></div>
+          </section>
+
+          <section class="dashboard-grid executive-grid">
+            <article class="panel table-panel">
+              <div class="panel-head">
+                <h2>Recent reels and shorts</h2>
+              </div>
+              <div class="filters">
+                <input id="searchInput" placeholder="Search service, creator, title, URL" />
+                <select id="companyFilter"><option value="">All companies</option></select>
+                <select id="offerFilter"><option value="">All offers</option></select>
+                <select id="statusFilter"><option value="">All statuses</option></select>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Video</th>
+                      <th>Company</th>
+                      <th>Creator</th>
+                      <th>Platform</th>
+                      <th class="num">Raw</th>
+                      <th class="num">Accepted</th>
+                      <th class="num">Gross</th>
+                      <th>Status</th>
+                      <th>AI</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="videoRows"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <h2>Priority offers</h2>
+              </div>
+              <div id="offerCards" class="cards"></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <h2>Admin queues</h2>
+              </div>
+              <div id="queueCards" class="cards queue-grid"></div>
+            </article>
+          </section>
+        </section>
+
+        <section id="offers" class="tab-panel hidden">
+          <div class="section-heading page-title-row">
+            <div>
+              <p class="eyebrow">Offers</p>
+              <h2>Choose a campaign by rate, budget, rules and advertiser reliability.</h2>
+            </div>
+            <button type="button" data-jump-tab="analytics">Add video</button>
+          </div>
+          <div class="offer-category-tabs">
+            <button class="active" type="button">All</button>
+            <button type="button">Marketplaces</button>
+            <button type="button">Content</button>
+            <button type="button">AI / SaaS</button>
+          </div>
+          <div id="offersPage" class="offer-board"></div>
+        </section>
+
+        <section id="content" class="tab-panel hidden">
+          <div class="section-heading page-title-row">
+            <div>
+              <p class="eyebrow">WANT2VIEW content analytics</p>
+              <h2>Parse popular videos, test hooks and turn trends into creator briefs.</h2>
+            </div>
+            <button type="button">Run free test</button>
+          </div>
+          <div id="contentAnalytics" class="content-analytics-grid"></div>
+        </section>
+
+        <section id="analytics" class="tab-panel hidden">
+          <div class="section-heading">
+            <p class="eyebrow">Publications</p>
+            <h2>Add videos, track review status, views and earnings.</h2>
+          </div>
+          <div id="analyticsCards" class="analytics-grid"></div>
+          <section class="panel account-import-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Import from connected account</h2>
+                <p class="muted">Choose an account and period. ViewFlow will add discovered videos to tracking without manual links.</p>
+              </div>
+            </div>
+            <form id="accountImportForm" class="form-grid compact-form">
+              <label>Account<select name="accountId" id="bulkAccount"></select></label>
+              <label>Offer<select name="offerId" id="bulkOffer"></select></label>
+              <label>Period<select name="days"><option value="7">7 days</option><option value="14" selected>14 days</option><option value="30">30 days</option></select></label>
+              <button type="submit">Import videos</button>
+              <p id="bulkImportStatus" class="muted wide"></p>
+            </form>
+          </section>
+          <section class="panel reel-tracker-panel">
+            <div class="panel-head">
+              <div>
+                <h2>My publications</h2>
+                <p class="muted">Attach a link once. ViewFlow pulls views, report date and current earnings.</p>
+              </div>
+              <button id="showVideoFormBtn" type="button">Add video</button>
+            </div>
+            <form id="videoLinkForm" class="form-grid hidden">
+              <input name="accountId" id="videoAccountId" type="hidden" />
+              <label>Offer<select name="offerId" id="videoOffer"></select></label>
+              <label>Profile<select name="creatorId" id="videoCreator"></select></label>
+              <label>Platform<select name="platform"><option>TikTok</option><option>Instagram Reels</option><option>YouTube Shorts</option></select></label>
+              <label>Publish date<input name="publishedAt" type="date" /></label>
+              <label>Current views<input name="rawViews" type="number" min="0" step="1" /></label>
+              <label>Language<select name="language"><option value="en">EN</option><option value="ru">RU</option></select></label>
+              <label class="wide">Video link<input id="videoUrlInput" name="url" required placeholder="https://..." /></label>
+              <label class="wide">Title / hook<input name="title" placeholder="What is the video about?" /></label>
+              <button class="ghost" id="previewVideoBtn" type="button">Pull data from link</button>
+              <button type="submit">Attach video</button>
+            </form>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Video</th>
+                    <th>Offer</th>
+                    <th>Cycle</th>
+                    <th>Payout date</th>
+                    <th class="num">Views</th>
+                    <th class="num">Accepted</th>
+                    <th class="num">Earnings</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="reelTrackerRows"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section id="reports" class="tab-panel hidden">
+          <div class="section-heading">
+            <p class="eyebrow">Finance</p>
+            <h2>Balance, hold, withdrawal requests and company reports.</h2>
+          </div>
+          <div id="payoutSummary" class="payout-summary"></div>
+          <div class="section-subhead">
+            <div>
+              <h2>Withdrawal requests</h2>
+              <p class="muted">Wallet withdrawals are created separately after revenue is fixed on balance.</p>
+            </div>
+          </div>
+          <div id="withdrawalStatusCards" class="withdrawal-grid"></div>
+          <div class="section-subhead">
+            <div>
+              <h2>Offer payout calendar</h2>
+              <p class="muted">See when advertisers close reports and which videos enter the payout cycle.</p>
+            </div>
+          </div>
+          <div id="reportCards" class="report-grid"></div>
+        </section>
+
+        <section id="company" class="tab-panel hidden">
+          <div class="section-heading">
+            <p class="eyebrow">Advertiser workspace</p>
+            <h2>Create offers, fund the project balance and approve payable views.</h2>
+          </div>
+          <form id="offerForm" class="panel form-grid">
+            <div class="panel-head">
+              <div>
+                <h2>Create offer</h2>
+                <p class="muted">MVP model: payout only for every 1,000 verified views. Shares, reposts and comments do not affect payment yet.</p>
+              </div>
+            </div>
+            <label>Company<select name="companyId" id="offerCompany"></select></label>
+            <label>Service<input name="service" placeholder="Service name" /></label>
+            <label>Category<input name="category" placeholder="AI / SaaS" /></label>
+            <label class="wide">Offer title<input name="title" required placeholder="Example: AI workflow demo" /></label>
+            <label>Rate per 1k, USD<input name="viewRateUsd" type="number" min="0" step="0.01" value="0.50" /></label>
+            <label>Minimum views<input name="minViews" type="number" min="0" step="1" value="1000" /></label>
+            <label>Per-video cap<input name="maxPaidViewsPerVideo" type="number" min="0" step="1" value="500000" /></label>
+            <label>Offer budget<input name="totalBudgetUsd" type="number" min="0" step="0.01" value="1000" /></label>
+            <label>Daily limit<input name="dailyBudgetUsd" type="number" min="0" step="0.01" value="200" /></label>
+            <label>Stop reserve<input name="stopThresholdUsd" type="number" min="0" step="0.01" value="100" /></label>
+            <label>Languages<input name="languages" value="en,ru" /></label>
+            <fieldset class="platform-choice offer-platforms">
+              <legend>Publishing platforms</legend>
+              <label><input type="checkbox" name="platforms" value="TikTok" checked /><span>TikTok</span></label>
+              <label><input type="checkbox" name="platforms" value="Instagram Reels" checked /><span>Instagram Reels</span></label>
+              <label><input type="checkbox" name="platforms" value="YouTube Shorts" checked /><span>YouTube Shorts</span></label>
+              <label><input type="checkbox" name="platforms" value="X / Twitter" /><span>X / Twitter</span></label>
+            </fieldset>
+            <label>Verification<select name="verificationMode"><option value="manual_verified_views">Manual verified views</option><option value="api_verified_views">API verified views</option><option value="hybrid_review">Hybrid review</option></select></label>
+            <label>Content rights<select name="rights"><option value="organic_usage_included">Organic usage included</option><option value="paid_usage_bonus">Paid usage bonus</option><option value="creator_owned">Creator owned</option></select></label>
+            <label class="wide">Anti-fraud rules<input name="fraudRules" value="No fake views; no recycled posts; platform screenshots may be requested; suspicious spikes go to review" /></label>
+            <label class="wide">Rules<input name="rules" value="Payment only for verified views; fake claims are prohibited; video language must match offer terms" /></label>
+            <button type="submit">Create offer</button>
+          </form>
+          <div id="companyCards" class="company-grid"></div>
+        </section>
+
+        <section id="creators" class="tab-panel hidden">
+          <div class="section-heading">
+            <p class="eyebrow">Creator workspace</p>
+            <h2>Your offers, videos, earnings and USDT withdrawals.</h2>
+          </div>
+          <div id="creatorCommandCenter" class="creator-command"></div>
+          <div id="creatorBalanceCards" class="creator-balance-grid"></div>
+          <section class="creator-workbench">
+            <article class="panel creator-action-panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Next steps</h2>
+                  <p class="muted">Simple flow: choose an offer, publish a video, attach it once and wait for view locking.</p>
+                </div>
+              </div>
+              <div id="creatorWorkflowCards" class="creator-flow-grid"></div>
+            </article>
+            <article class="panel creator-offer-panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Best offers to start with</h2>
+                  <p class="muted">Prioritized by clearer rules, stable budget and advertiser reliability.</p>
+                </div>
+                <button class="ghost" type="button" data-jump-tab="offers">All offers</button>
+              </div>
+              <div id="creatorOfferCards" class="creator-offer-list"></div>
+            </article>
+          </section>
+          <section class="panel creator-video-panel">
+            <div class="panel-head">
+              <div>
+                <h2>My videos</h2>
+                <p class="muted">ViewFlow tracks views until the company report, then locks the payable amount.</p>
+              </div>
+              <button type="button" data-jump-tab="analytics">Add video</button>
+            </div>
+            <div id="creatorVideoCards" class="creator-video-list"></div>
+          </section>
+          <section class="panel table-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Connected accounts</h2>
+                <p class="muted">Connect an account once so you do not have to paste every video link manually.</p>
+              </div>
+            </div>
+            <div id="creatorRows" class="creator-account-list"></div>
+          </section>
+          <form id="withdrawalForm" class="panel form-grid withdrawal-panel">
+            <div class="panel-head">
+              <div>
+                <h2>USDT withdrawal</h2>
+                <p class="muted">A request reserves your ViewFlow balance and sends the payout to your wallet.</p>
+              </div>
+            </div>
+            <div id="withdrawalPreview" class="withdrawal-preview"></div>
+            <label>Profile<select name="creatorId" id="withdrawCreator"></select></label>
+            <label>Amount, USD<input name="amountUsd" type="number" min="0" step="0.01" value="100" /></label>
+            <label>Network<input name="network" value="TRC20" /></label>
+            <label class="wide">Wallet address<input name="address" /></label>
+            <button type="submit">Request payout</button>
+          </form>
+        </section>
+
+        <section id="tracking" class="tab-panel hidden">
+          <div class="section-heading">
+            <p class="eyebrow">Tracking/API</p>
+            <h2>Referral links, promo codes and direct service events.</h2>
+          </div>
+          <section class="grid two">
+            <article class="panel">
+              <div class="panel-head"><h2>Referral links</h2></div>
+              <div id="trackingLinks" class="cards"></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><h2>Promo codes</h2></div>
+              <div id="promoCodes" class="cards"></div>
+            </article>
+          </section>
+          <form id="serviceEventForm" class="panel form-grid">
+            <div class="panel-head">
+              <h2>Sandbox service API event</h2>
+            </div>
+            <label>Offer<select name="offerId" id="eventOffer"></select></label>
+            <label>Creator<select name="creatorId" id="eventCreator"></select></label>
+            <label>Type<select name="type"><option>signup</option><option>trial_started</option><option>activation</option><option>paid_subscription</option><option>refund</option><option>chargeback</option></select></label>
+            <label>Amount USD<input name="amountUsd" type="number" min="0" step="0.01" /></label>
+            <label class="wide">External event ID<input name="externalEventId" required /></label>
+            <button type="submit">Send sandbox event</button>
+          </form>
+          <section class="panel">
+            <div class="panel-head"><h2>Service events</h2></div>
+            <div id="serviceEvents" class="cards event-cards"></div>
+          </section>
+        </section>
+
+        <section id="finance" class="tab-panel hidden">
+          <div class="section-heading">
+            <p class="eyebrow">Balance</p>
+            <h2>Advertiser funding, budget reserve and creator payouts.</h2>
+          </div>
+          <section class="grid two">
+            <form id="depositForm" class="panel form-grid">
+              <div class="panel-head">
+                <h2>Fund project balance</h2>
+              </div>
+              <label>Company<select name="companyId" id="depositCompany"></select></label>
+              <label>Amount USD<input name="amountUsd" type="number" min="0" step="0.01" /></label>
+              <label>Network<input name="network" value="TRC20" /></label>
+              <label class="wide">TX hash<input name="txHash" /></label>
+              <button type="submit">Credit deposit</button>
+            </form>
+            <article class="panel">
+              <div class="panel-head"><h2>Ledger</h2></div>
+              <div id="ledgerRows" class="cards ledger-cards"></div>
+            </article>
+          </section>
+        </section>
+
+        <section id="knowledge" class="tab-panel hidden">
+          <div class="section-heading">
+            <p class="eyebrow">Help center</p>
+            <h2>Rules, payouts, rejection reasons and video requirements.</h2>
+          </div>
+          <div id="knowledgeCards" class="cards knowledge"></div>
+        </section>
+
+        <section id="admin" class="tab-panel hidden">
+          <div class="section-heading">
+            <p class="eyebrow">Admin</p>
+            <h2>Accounting, company reports, payouts and audit.</h2>
+          </div>
+          <form id="companyReportForm" class="panel form-grid">
+            <div class="panel-head">
+              <div>
+                <h2>Finalize advertiser report</h2>
+                <p class="muted">Locks approved views, credits creator internal balance and records the platform fee.</p>
+              </div>
+            </div>
+            <label>Company<select name="companyId" id="reportCompany"></select></label>
+            <label>Offer<select name="offerId" id="reportOffer"><option value="">All company offers</option></select></label>
+            <label>Report date<input name="periodTo" type="date" /></label>
+            <label class="wide">Comment<input name="note" placeholder="Example: weekly company report confirmed" /></label>
+            <button type="submit">Finalize report and credit balance</button>
+          </form>
+          <div id="adminCards" class="admin-grid"></div>
+        </section>
+      </section>
+
+      <datalist id="offerOptions"></datalist>
+      <datalist id="creatorOptions"></datalist>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

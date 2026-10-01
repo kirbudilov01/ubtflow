@@ -1,0 +1,22 @@
+{
+  "name": "ubt-admin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "NODE_ENV=production node server.js",
+    "seed": "node scripts/seed.js",
+    "check:ui": "node scripts/check-ui.js",
+    "check:data": "node scripts/check-data-quality.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^4.19.2",
+    "multer": "^2.2.0",
+    "read-excel-file": "^9.3.4"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1"
+  }
+}
